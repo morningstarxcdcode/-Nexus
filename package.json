@@ -1,0 +1,27 @@
+{
+  "name": "crazy-dev-tools",
+  "version": "1.0.0",
+  "description": "An original, innovative developer toolset inspired by ohmyzsh, starship, and lazygit.",
+  "main": "src/prompt.js",
+  "scripts": {
+    "start-prompt": "node src/prompt.js",
+    "start-git-ui": "node src/git-ui.js"
+  },
+  "keywords": [
+    "developer",
+    "tools",
+    "shell",
+    "git",
+    "cli",
+    "prompt",
+    "terminal",
+    "utility"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^9.0.0",
+    "chalk": "^5.0.0",
+    "simple-git": "^3.16.0"
+  }
+}
