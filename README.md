@@ -62,7 +62,7 @@ Check out Nexus in action! 🎥
 
 ## 📖 Documentation
 
-For detailed instructions and advanced configurations, visit our [Wiki](https://github.com/yourusername/nexus/wiki).
+For detailed instructions and advanced configurations, visit our [Wiki](https://github.com/morningstarxcdcode/nexus/wiki).
 
 ---
 
@@ -88,9 +88,9 @@ We welcome contributions! Check out our [Contributing Guide](https://github.com/
 
 ## 💬 Stay Connected
 
-- **Twitter**: [@yourusername](https://twitter.com/yourusername)
-- **Discord**: Join our [Community Server](https://discord.gg/yourserver)
-- **Email**: hello@nexus.dev
+- **Twitter**: i dont have 
+- **Discord**: i have but idk my user name bec i dont use much now
+- **Email**: sourav.xcd@gmail.com
 
 ---
 
