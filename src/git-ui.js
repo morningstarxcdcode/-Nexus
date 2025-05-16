@@ -54,8 +54,31 @@ async function mainMenu() {
       console.log(chalk.green('Changes committed.'));
       break;
     case 'push':
-      await git.push();
-      console.log(chalk.green('Pushed to remote.'));
+      try {
+        const status = await git.status()
+        if (!status.tracking) {
+          const answer = await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'publish',
+              message: 'The current branch has no upstream branch. Would you like to publish it?',
+              default: true
+            }
+          ])
+          if (answer.publish) {
+            const status = await git.status();
+            await git.push(['--set-upstream', 'origin', status.current]);
+            console.log(chalk.green(`Branch ${status.current} published`))
+          }
+        }
+        else {
+          await git.push();
+          console.log(chalk.green('Pushed to remote.'));
+        }
+      }
+      catch (error) {
+        console.log(chalk.red(`Error: ${error}`))
+      }
       break;
     case 'pull':
       await git.pull();
