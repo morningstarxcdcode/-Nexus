@@ -22,6 +22,9 @@ async function mainMenu() {
     { name: 'Switch branch', value: 'switch_branch' },
     { name: 'Show commit log', value: 'show_log' },
     { name: 'Manage remotes', value: 'manage_remotes' },
+    { name: 'Create branch', value: 'create_branch' },
+    { name: 'Delete branch', value: 'delete_branch' },
+    { name: 'Show graph', value: 'graph' },
     { name: 'Exit', value: 'exit' }
   ];
 
@@ -66,6 +69,36 @@ async function mainMenu() {
       break;
     case 'manage_remotes':
       await manageRemotes();
+      break;
+    case 'create_branch':
+      const branchName = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'branchName',
+          message: 'Enter the new branch name:'
+        }
+      ])
+      await createBranch(branchName.branchName)
+      break;
+    case 'delete_branch':
+      const branches = await git.branch();
+      const choices = branches.all.map(branch => ({
+        name: branch,
+        value: branch
+      }));
+
+      const answer = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'branch',
+          message: 'Select a branch to delete',
+          choices
+        }
+      ]);
+      await deleteBranch(answer.branch)
+      break;
+    case 'graph':
+      console.log(await git.raw(['log', '--graph', '--oneline', '--all']));
       break;
     case 'exit':
       console.log('Goodbye!');
@@ -143,6 +176,23 @@ async function manageRemotes() {
   }
 }
 
+async function createBranch(name) {
+  try {
+    await git.checkoutBranch(name, (await git.status()).current)
+  }
+  catch (error) {
+    console.log(chalk.red(`Error creating branch ${name}: ${error}`))
+  }
+}
+
+async function deleteBranch(name) {
+  try {
+    await git.deleteLocalBranch(name)
+  }
+  catch (error) {
+    console.log(chalk.red(`Error deleting branch ${name}: ${error}`))
+  }
+}
 async function pause() {
   await inquirer.prompt([
     {
