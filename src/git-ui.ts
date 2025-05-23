@@ -19,7 +19,12 @@ async function mainMenu() {
 
   console.log('\n')
   const actions = [
-    { name: 'Stage all changes', key: 'a', value: 'stage_all' },
+    { name: 'Stage all changes', key: 'a', value: 'stage_all', subActions: [
+      { name: 'Stage all', value: 'stage_all' },
+      { name: 'Unstage all', value: 'unstage_all' },
+      { name: 'Stage file', value: 'stage_file' },
+      { name: 'Unstage file', value: 'unstage_file' }
+    ] },
     { name: 'Commit changes', key: 'c', value: 'commit' },
     { name: 'Push to remote', key: 'p', value: 'push' },
     { name: 'Pull from remote', key: 'l', value: 'pull' },
