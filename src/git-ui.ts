@@ -67,8 +67,13 @@ async function mainMenu() {
           ])
           if (answer.publish) {
             const status = await git.status();
-            await git.push(['--set-upstream', 'origin', status.current]);
-            console.log(chalk.green(`Branch ${status.current} published`))
+            if (status.current) {
+              await git.push(['--set-upstream', 'origin', status.current]);
+              console.log(chalk.green(`Branch ${status.current} published`))
+            }
+            else {
+              console.log(chalk.red('No current branch found.'));
+            }
           }
         }
         else {
@@ -199,16 +204,19 @@ async function manageRemotes() {
   }
 }
 
-async function createBranch(name) {
+async function createBranch(name: string) {
   try {
-    await git.checkoutBranch(name, (await git.status()).current)
+    const status = await git.status();
+    if (status.current) {
+      await git.checkoutBranch(name, status.current)
+    }
   }
   catch (error) {
     console.log(chalk.red(`Error creating branch ${name}: ${error}`))
   }
 }
 
-async function deleteBranch(name) {
+async function deleteBranch(name: string) {
   try {
     await git.deleteLocalBranch(name)
   }
