@@ -1,3 +1,4 @@
+#!/usr/bin/env npx ts-node
 import inquirer from 'inquirer';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
