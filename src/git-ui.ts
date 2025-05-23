@@ -2,6 +2,7 @@
 import inquirer from 'inquirer';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
+import gitActions from './git/actionPrompt';
 
 const git = simpleGit();
 
@@ -15,30 +16,26 @@ async function mainMenu() {
     console.log(` - ${file.path} [${file.working_dir}${file.index}]`);
   });
 
-  const choices = [
-    { name: 'Stage all changes', value: 'stage_all' },
-    { name: 'Commit changes', value: 'commit' },
-    { name: 'Push to remote', value: 'push' },
-    { name: 'Pull from remote', value: 'pull' },
-    { name: 'Switch branch', value: 'switch_branch' },
-    { name: 'Show commit log', value: 'show_log' },
-    { name: 'Manage remotes', value: 'manage_remotes' },
-    { name: 'Create branch', value: 'create_branch' },
-    { name: 'Delete branch', value: 'delete_branch' },
-    { name: 'Show graph', value: 'graph' },
-    { name: 'Exit', value: 'exit' }
+  console.log('\n')
+  const actions = [
+    { name: 'Stage all changes', key: 'a', value: 'stage_all' },
+    { name: 'Commit changes', key: 'c', value: 'commit' },
+    { name: 'Push to remote', key: 'p', value: 'push' },
+    { name: 'Pull from remote', key: 'l', value: 'pull' },
+    { name: 'Switch branch', key: 's', value: 'switch_branch' },
+    { name: 'Show commit log', key: 'o', value: 'show_log' },
+    { name: 'Manage remotes', key: 'r', value: 'manage_remotes' },
+    { name: 'Create branch', key: 'b', value: 'create_branch' },
+    { name: 'Delete branch', key: 'd', value: 'delete_branch' },
+    { name: 'Show graph', key: 'g', value: 'graph' },
+    { name: 'Exit', key: 'x', value: 'exit' }
   ];
 
-  const answer = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'action',
-      message: 'Select an action',
-      choices
-    }
-  ]);
+  const action = await gitActions({
+    actions: actions
+  })
 
-  switch (answer.action) {
+  switch (action) {
     case 'stage_all':
       await git.add('.');
       console.log(chalk.green('All changes staged.'));
