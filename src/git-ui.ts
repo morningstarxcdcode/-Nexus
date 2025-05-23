@@ -3,6 +3,7 @@ import inquirer from 'inquirer';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import gitActions from './git/actionPrompt';
+import stashPrompt from './git/stashPrompt';
 
 const git = simpleGit();
 
@@ -28,6 +29,7 @@ async function mainMenu() {
     { name: 'Create branch', key: 'b', value: 'create_branch' },
     { name: 'Delete branch', key: 'd', value: 'delete_branch' },
     { name: 'Show graph', key: 'g', value: 'graph' },
+    { name: 'Manage stashes', key: 't', value: 'stash' },
     { name: 'Exit', key: 'x', value: 'exit' }
   ];
 
@@ -125,6 +127,9 @@ async function mainMenu() {
       break;
     case 'graph':
       console.log(await git.raw(['log', '--graph', '--oneline', '--all']));
+      break;
+    case 'stash':
+      await stashPrompt(git);
       break;
     case 'exit':
       console.log('Goodbye!');

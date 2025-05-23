@@ -12,7 +12,8 @@ const ACTION_HEIGHT = 8
 const ACTION_WIDTH = 16
 
 const bel = () => process.stdout.write("\x07")
-const gitActions = createPrompt((config: { actions: GitAction[] }, done) => {
+
+const gitActions = createPrompt((config: { actions: GitAction[], keys?: 'number' | 'letter' }, done) => {
   const [position, setPosition] = useState([0, 0])
 
   const { width, height } = useTerminalSize()
@@ -21,6 +22,20 @@ const gitActions = createPrompt((config: { actions: GitAction[] }, done) => {
   const cols = Math.max(1, Math.floor(width / ACTION_WIDTH))
   const rows = Math.ceil(config.actions.length / cols)
 
+  if (config.keys === 'number') {
+    config.actions.forEach((action, index) => {
+      if (index <= 9) {
+        action.key = ((index + 1) % 10).toString()
+      }
+    })
+  } else if (config.keys === 'letter') {
+    config.actions.forEach((action, index) => {
+      if (index <= 25) {
+        action.key = String.fromCharCode(97 + index) // 'a' is 97 in ASCII
+      }
+    })
+  }
+  
   // Build the grid: array of arrays of GitActions
   const grid: GitAction[][] = []
   for (let r = 0; r < rows; r++) {
