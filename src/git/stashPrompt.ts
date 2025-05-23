@@ -27,6 +27,8 @@ async function selectStash(git: SimpleGit, message?: string): Promise<{ index: n
   return selectedStash;
 }
 export default async function stashPrompt(git: SimpleGit) {
+  console.clear();
+  console.log(chalk.cyan('Stash Menu'));
   const action = await gitActions({
     actions: [
       { value: 'save', name: 'Save Stash' },
