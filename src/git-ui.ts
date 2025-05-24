@@ -1,6 +1,9 @@
+#!/usr/bin/env npx ts-node
 import inquirer from 'inquirer';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
+import gitActions from './git/actionPrompt';
+import stashPrompt from './git/stashPrompt';
 
 const git = simpleGit();
 
@@ -14,30 +17,32 @@ async function mainMenu() {
     console.log(` - ${file.path} [${file.working_dir}${file.index}]`);
   });
 
-  const choices = [
-    { name: 'Stage all changes', value: 'stage_all' },
-    { name: 'Commit changes', value: 'commit' },
-    { name: 'Push to remote', value: 'push' },
-    { name: 'Pull from remote', value: 'pull' },
-    { name: 'Switch branch', value: 'switch_branch' },
-    { name: 'Show commit log', value: 'show_log' },
-    { name: 'Manage remotes', value: 'manage_remotes' },
-    { name: 'Create branch', value: 'create_branch' },
-    { name: 'Delete branch', value: 'delete_branch' },
-    { name: 'Show graph', value: 'graph' },
-    { name: 'Exit', value: 'exit' }
+  console.log('\n')
+  const actions = [
+    { name: 'Stage all changes', key: 'a', value: 'stage_all', subActions: [
+      { name: 'Stage all', value: 'stage_all' },
+      { name: 'Unstage all', value: 'unstage_all' },
+      { name: 'Stage file', value: 'stage_file' },
+      { name: 'Unstage file', value: 'unstage_file' }
+    ] },
+    { name: 'Commit changes', key: 'c', value: 'commit' },
+    { name: 'Push to remote', key: 'p', value: 'push' },
+    { name: 'Pull from remote', key: 'l', value: 'pull' },
+    { name: 'Switch branch', key: 's', value: 'switch_branch' },
+    { name: 'Show commit log', key: 'o', value: 'show_log' },
+    { name: 'Manage remotes', key: 'r', value: 'manage_remotes' },
+    { name: 'Create branch', key: 'b', value: 'create_branch' },
+    { name: 'Delete branch', key: 'd', value: 'delete_branch' },
+    { name: 'Show graph', key: 'g', value: 'graph' },
+    { name: 'Manage stashes', key: 't', value: 'stash' },
+    { name: 'Exit', key: 'x', value: 'exit' }
   ];
 
-  const answer = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'action',
-      message: 'Select an action',
-      choices
-    }
-  ]);
+  const action = await gitActions({
+    actions: actions
+  })
 
-  switch (answer.action) {
+  switch (action) {
     case 'stage_all':
       await git.add('.');
       console.log(chalk.green('All changes staged.'));
@@ -67,8 +72,13 @@ async function mainMenu() {
           ])
           if (answer.publish) {
             const status = await git.status();
-            await git.push(['--set-upstream', 'origin', status.current]);
-            console.log(chalk.green(`Branch ${status.current} published`))
+            if (status.current) {
+              await git.push(['--set-upstream', 'origin', status.current]);
+              console.log(chalk.green(`Branch ${status.current} published`))
+            }
+            else {
+              console.log(chalk.red('No current branch found.'));
+            }
           }
         }
         else {
@@ -122,6 +132,9 @@ async function mainMenu() {
       break;
     case 'graph':
       console.log(await git.raw(['log', '--graph', '--oneline', '--all']));
+      break;
+    case 'stash':
+      await stashPrompt(git);
       break;
     case 'exit':
       console.log('Goodbye!');
@@ -199,16 +212,19 @@ async function manageRemotes() {
   }
 }
 
-async function createBranch(name) {
+async function createBranch(name: string) {
   try {
-    await git.checkoutBranch(name, (await git.status()).current)
+    const status = await git.status();
+    if (status.current) {
+      await git.checkoutBranch(name, status.current)
+    }
   }
   catch (error) {
     console.log(chalk.red(`Error creating branch ${name}: ${error}`))
   }
 }
 
-async function deleteBranch(name) {
+async function deleteBranch(name: string) {
   try {
     await git.deleteLocalBranch(name)
   }
