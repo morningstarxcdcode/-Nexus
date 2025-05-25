@@ -94,4 +94,4 @@ We welcome contributions! Check out our [Contributing Guide](https://github.com/
 
 ---
 
-Made with ❤️ by [Your Name](https://github.com/morningstarxcdcode)
+Made with ❤️ by [morningstarxcdcode](https://github.com/morningstarxcdcode)
