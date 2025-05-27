@@ -19,6 +19,9 @@ jobs:
           cache: 'npm'
       - run: npm ci
 
+      - name: Validate lock file
+        run: npx lockfile-lint --path package-lock.json --type npm --validate-https --validate-integrity
+
       - name: Lint
         run: npm run lint
 
