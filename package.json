@@ -4,9 +4,11 @@
   "description": "An original, innovative developer toolset inspired by ohmyzsh, starship, and lazygit.",
   "main": "src/prompt.js",
   "scripts": {
-    "start-prompt": "node src/prompt.js",
-    "start-git-ui": "node src/git-ui.js"
-  },
+  "lint": "eslint .",
+  "typecheck": "tsc --noEmit",
+  "test": "jest",
+  "build": "tsc"
+}
   "keywords": [
     "developer",
     "tools",
