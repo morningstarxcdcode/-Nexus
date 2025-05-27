@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/inquirer": "^9.0.8",
     "@types/node": "^22.15.21",
-    "eslint": "^8.0.0",
+    "eslint": "^8.57.1",
     "husky": "^9.1.7",
     "typescript": "^5.8.3"
   }
