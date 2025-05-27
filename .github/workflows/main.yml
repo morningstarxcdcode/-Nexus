@@ -71,5 +71,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url
-
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm run build
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
