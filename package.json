@@ -24,7 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@inquirer/core": "^10.1.11",
-    "chalk": "^5.0.0",
+    "chalk": "^5.5.0",
     "inquirer": "^12.6.3",
     "simple-git": "^3.16.0"
   },
