@@ -23,7 +23,7 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "@inquirer/core": "^10.1.11",
+    "@inquirer/core": "^11.1.1",
     "chalk": "^5.0.0",
     "inquirer": "^12.6.3",
     "simple-git": "^3.16.0"
