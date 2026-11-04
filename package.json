@@ -34,7 +34,7 @@
     "eslint": "^9.28.0",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
-    "standard-version": "^9.5.0",
+    "commit-and-tag-version": "^9.5.0",
     "typescript": "^5.8.3"
   }
 }
